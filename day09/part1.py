@@ -26,72 +26,58 @@ def compute(s: str) -> int:
         direction, magnitude = line.split(" ")
         magnitude = int(magnitude)
         for _ in range(magnitude):
+            # move head
             if direction == "U":
                 head.y += 1
-                if tail.distance_squared(head) <= 2 \
-                    and ((abs(tail.y - head.y) == 1) \
-                    or (tail.y - head.y == 0)):
-                    # head and tail still touching, do nothing
-                    continue
-                elif tail.distance_squared(head) == 2:
-                    # tail isn't touch head, need to move tail
-                    tail.y += 1
-                else:
-                    tail.x = head.x
-                    tail.y += 1
-                if (tail.x, tail.y) not in visited:
-                    visited.append(((tail.x, tail.y)))
-            
             if direction == "D":
                 head.y -= 1
-                if tail.distance_squared(head) <= 2 \
-                    and ((abs(tail.y - head.y) == 1) \
-                    or (tail.y - head.y == 0)):
-                    # head and tail still touching, do nothing
-                    continue
-                elif tail.distance_squared(head) == 2:
-                    # tail isn't touch head, need to move tail
-                    tail.y -= 1
-                else:
-                    tail.x = head.x
-                    tail.y -= 1
-                if (tail.x, tail.y) not in visited:
-                    visited.append(((tail.x, tail.y)))
-            
             if direction == "L":
                 head.x -= 1
-                if tail.distance_squared(head) <= 2 \
-                    and ((abs(tail.x - head.x) == 1) \
-                    or (tail.x - head.x == 0)):
-                    # head and tail still touching, do nothing
-                    continue
-                elif tail.distance_squared(head) == 2:
-                    # tail isn't touch head, need to move tail
-                    tail.x -= 1
-                else:
-                    tail.y = head.y
-                    tail.x -= 1
-                if (tail.x, tail.y) not in visited:
-                    visited.append(((tail.x, tail.y)))
-            
             if direction == "R":
                 head.x += 1
-                if tail.distance_squared(head) <= 2 \
-                    and ((abs(tail.x - head.x) == 1) \
-                    or (tail.x - head.x == 0)):
-                    # head and tail still touching, do nothing
-                    continue
-                elif tail.distance_squared(head) == 2:
-                    # tail isn't touch head, need to move tail
+
+            if tail.distance_squared(head) < 2:
+                # adj col or row
+                pass
+            elif head.x == tail.x:
+                # along same row, but 2 away
+                if head.y - tail.y == 2:
+                    tail.y += 1
+
+                if head.y - tail.y == -2:
+                    tail.y -= 1
+
+            elif head.y == tail.y:
+                # along same col, but two away
+                if head.x - tail.x == 2:
                     tail.x += 1
-                else:
+                
+                if head.x - tail.x == -2:
+                    tail.x -= 1
+
+            elif (tail.distance_squared(head) == 2):
+                # adj diagonal
+                pass
+            
+            elif (tail.distance_squared(head) > 2):
+                # move head
+                if direction == "U":
+                    tail.y += 1
+                    tail.x = head.x
+                if direction == "D":
+                    tail.y -= 1
+                    tail.x = head.x
+                if direction == "L":
+                    tail.x -= 1
                     tail.y = head.y
+                if direction == "R":
                     tail.x += 1
-                if (tail.x, tail.y) not in visited:
-                    visited.append(((tail.x, tail.y)))
-    # print("head:", head, "tail:", tail)
-    # from pprint import pprint
-    # pprint(visited)
+                    tail.y = head.y
+            
+            
+            if (tail.x, tail.y) not in visited:
+                visited.append((tail.x, tail.y))
+
     return len(visited)
 
 def main() -> int:
