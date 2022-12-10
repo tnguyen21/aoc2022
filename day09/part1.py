@@ -60,19 +60,31 @@ def compute(s: str) -> int:
                 pass
             
             elif (tail.distance_squared(head) > 2):
-                # move head
-                if direction == "U":
-                    tail.y += 1
-                    tail.x = head.x
-                if direction == "D":
-                    tail.y -= 1
-                    tail.x = head.x
-                if direction == "L":
-                    tail.x -= 1
-                    tail.y = head.y
-                if direction == "R":
-                    tail.x += 1
-                    tail.y = head.y
+                # move tail diag
+                    if direction == "U":
+                        tail.y += 1
+                        if head.x > tail.x:
+                            tail.x += 1
+                        else:
+                            tail.x -= 1
+                    if direction == "D":
+                        tail.y -= 1
+                        if head.x > tail.x:
+                            tail.x += 1
+                        else:
+                            tail.x -= 1
+                    if direction == "L":
+                        tail.x -= 1
+                        if head.y > tail.y:
+                            tail.y += 1
+                        else:
+                            tail.y -= 1
+                    if direction == "R":
+                        tail.x += 1
+                        if head.y > tail.y:
+                            tail.y += 1
+                        else:
+                            tail.y -= 1
             
             
             if (tail.x, tail.y) not in visited:
